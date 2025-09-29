@@ -1,29 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Web3 Login Demo</title>
+    <meta charset="UTF-8">
+    <title>Web3 Login Demo</title>
 </head>
 <body>
-  <h1>Web3 Login Demo</h1>
-  <button id="connectButton">Connect Wallet</button>
-  <p id="status"></p>
+    <h1>Web3 Login Demo</h1>
+    <button id="connectButton">Connect Wallet</button>
+    <p id="status"></p>
 
-  <script>
+    <script>
     async function connectWallet() {
-      if (typeof window.ethereum !== 'undefined') {
-        try {
-          const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-          document.getElementById('status').innerText = 'Connected account: ' + accounts[0];
-        } catch (err) {
-          document.getElementById('status').innerText = 'User rejected connection request.';
-        }
-      } else {
-        document.getElementById('status').innerText = 'Please install MetaMask!';
-      }
-    }
+        const statusEl = document.getElementById('status');
+        // Show connecting feedback
+        statusEl.textContent = 'Attempting to connect...';
 
+        // Check if MetaMask is available
+        if (typeof window.ethereum === 'undefined') {
+            statusEl.textContent = 'MetaMask is not installed. Please install MetaMask to continue.';
+            return;
+        }
+        try {
+            // Request accounts from MetaMask
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            statusEl.textContent = 'Connected: ' + accounts[0];
+        } catch (err) {
+            // Display error message if connection fails
+            statusEl.textContent = 'Connection failed: ' + err.message;
+        }
+    }
     document.getElementById('connectButton').addEventListener('click', connectWallet);
-  </script>
+    </script>
 </body>
 </html>
