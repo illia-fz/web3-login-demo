@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Web3 Login Demo</title>
+</head>
+<body>
+  <h1>Web3 Login Demo</h1>
+  <button id="connectButton">Connect Wallet</button>
+  <p id="status"></p>
+
+  <script>
+    async function connectWallet() {
+      if (typeof window.ethereum !== 'undefined') {
+        try {
+          const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+          document.getElementById('status').innerText = 'Connected account: ' + accounts[0];
+        } catch (err) {
+          document.getElementById('status').innerText = 'User rejected connection request.';
+        }
+      } else {
+        document.getElementById('status').innerText = 'Please install MetaMask!';
+      }
+    }
+
+    document.getElementById('connectButton').addEventListener('click', connectWallet);
+  </script>
+</body>
+</html>
